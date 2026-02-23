@@ -127,3 +127,7 @@ flex-direction: column;
 .container.container_btns{
   position: absolute;
 }
+
+.btns.btnsCh{
+  display: none;
+}

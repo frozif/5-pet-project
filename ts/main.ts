@@ -1,12 +1,12 @@
-tableElements = document.querySelectorAll(`.tb`)
-btnElement1 = document.querySelector(`.btn1`)
-btnElement2 = document.querySelector(`.btn2`)
-btnElementX = document.querySelector(`.btnX`)
-btnElementO = document.querySelector(`.btnO`)
-btnsElement = document.querySelector(`.btns`)
-boardElement = document.querySelector(`.board`)
-btnsCHElement = document.querySelector(`.btns.btnsCh`)
-console.log(boardElement);
+const  tableElements = [].slice.call(document.querySelectorAll<HTMLDivElement>(`.tb`)!);  
+const btnElement1 = document.querySelector(`.btn1`) as HTMLButtonElement    
+const btnElement2 = document.querySelector(`.btn2`) as HTMLButtonElement
+const btnElementX = document.querySelector(`.btnX`) as HTMLButtonElement
+const btnElementO = document.querySelector(`.btnO`)as HTMLButtonElement
+const btnsElement = document.querySelector(`.btns`) as HTMLDivElement
+const boardElement = document.querySelector(`.board`) as HTMLDivElement
+const btnsCHElement = document.querySelector(`.btns.btnsCh`)as HTMLDivElement
+// console.log(btnsCHElement);
 let bot = ``
 let player = ``
 let x  = `X`; 
@@ -15,14 +15,14 @@ let x  = `X`;
 
 let combos = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]]
 let vin = false 
-result = []
+let result = []
 let gameOver = false;
 let mode = null;
 
 function XO(){
         btnsElement.style.display = `none`
     btnsCHElement.style.display = `flex`
-    boardElement.style.pointerEvents = `none`
+        boardElement.style.pointerEvents = `none`
 }
 
 function resetGame() {
@@ -35,7 +35,7 @@ function resetGame() {
     vin = false;
     x = "X";
         btnsCHElement.style.pointerEvents  = `auto`
-            boardElement.style.pointerEvents = `none`
+                    boardElement.style.pointerEvents = `none`
 }
 
 
@@ -49,6 +49,7 @@ XO()
 btnElement2.addEventListener("click", ()=>{ mode = 2; alert("Нажата кнопка 2"); 
     XO()
 });
+
 
 
    btnElementX.addEventListener(`click`, ()=>{
@@ -67,7 +68,8 @@ bot = `X`
     btnsCHElement.style.pointerEvents  = `none`
    })
    
-// ----------------------------------------------
+// ---------------------------------------------------------------------------------------
+
 
 tableElements.forEach(go => {
 
@@ -87,10 +89,11 @@ if (mode===2){
                 go.textContent = x
 
 
-                let emptyCells = Array.from(tableElements).filter(cell => cell.textContent === "");
+                // let emptyCells = Array.from(tableElements).filter(cell => cell.textContent === "");
+                       let emptyCells = [].slice.call(tableElements).filter((cell: Element) => cell.textContent === "");  
 if (emptyCells.length>0) {
   let oRandom = Math.floor(Math.random()*emptyCells.length)
-  let random = emptyCells[oRandom]
+  let random = emptyCells[oRandom]!
   random.textContent = bot;
 random.style.backgroundColor = "blue";
 random.style.color = "white";
@@ -103,18 +106,26 @@ console.log(random.textContent);
 
 
 // ---------------------------------------------
-    for (let [a, b, c] of combos) {
-    if (tableElements[a].textContent  !== "" &&
-        tableElements[a].textContent === tableElements[b].textContent &&
-        tableElements[a].textContent === tableElements[c].textContent) {
-      alert(`Победа: ${tableElements[a].textContent}`);
 
+    for (const [a, b, c] of combos) {
+        const elA = tableElements[a];
+          const elB  = tableElements[b];
+           const elC  = tableElements[c]; 
+      if (!elA || !elB || !elC) continue; 
+               const textA  = elA.textContent?.trim();
+          const textB  = elB.textContent?.trim();
+           const textC  = elC.textContent?.trim();
+
+                 if (textA && textA === textB && textA === textC) {
+alert(`Победа: ${textA}`);
 vin = true
     resetGame();
       return;
-      
+      }
+    
+
         }
-    }
+    
 
 
 // ---------------------------------------------
@@ -141,4 +152,11 @@ resetGame()
   });
 
 
+if (btnElement1) {
+      btnElement1.addEventListener("click", ()=>{
+         mode = 1;
+          alert("Нажата кнопка 1");
+         });
+}
 
+btnElement2!.addEventListener("click", ()=>{ mode = 2; alert("Нажата кнопка 2"); });
